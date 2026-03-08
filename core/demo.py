@@ -1,58 +1,3 @@
-# # demo.py - Production-grade UI
-# import streamlit as st
-# from verify_pipeline import run_sync_analysis
-# import tempfile
-# import os
-
-# st.set_page_config(page_title="AVSync Pro", layout="wide")
-# st.title("🎬 Production Audio-Video Synchronization")
-# st.markdown("---")
-
-# col1, col2 = st.columns([1, 3])
-
-# with col1:
-#     st.subheader("📁 Upload Video")
-#     uploaded_file = st.file_uploader(
-#         "Choose MP4 file", 
-#         type=["mp4", "mov", "avi"],
-#         help="Single speaker, clear face recommended"
-#     )
-    
-#     if uploaded_file:
-#         # Preview
-#         st.video(uploaded_file)
-
-# with col2:
-#     if uploaded_file:
-#         if st.button("🚀 Analyze Sync (Production)", type="primary", use_container_width=True):
-#             with st.spinner("Running production sync analysis..."):
-#                 result = run_sync_analysis(uploaded_file)
-            
-#             if result["success"]:
-#                 st.success("✅ Analysis Complete")
-                
-#                 col_a, col_b, col_c = st.columns(3)
-#                 with col_a:
-#                     st.metric("Offset", f"{result['offset']:+.3f}s")
-#                 with col_b:
-#                     st.metric("Confidence", f"{result['confidence']:.3f}")
-#                 with col_c:
-#                     st.metric("Sync Distance", f"{result['distance']:.3f}")
-                
-#                 # Quality indicator
-#                 if result['confidence'] > 0.8:
-#                     st.success("🎉 Excellent sync quality")
-#                 elif result['confidence'] > 0.6:
-#                     st.info("ℹ️ Good sync quality")
-#                 else:
-#                     st.warning("⚠️ Poor sync - check video quality")
-#             else:
-#                 st.error(f"❌ {result['error']}")
-
-# st.markdown("---")
-# st.caption("Production-grade AVSync | Powered by deep cross-modal embeddings")
-
-
 import streamlit as st
 import plotly.graph_objects as go
 import numpy as np
@@ -64,8 +9,8 @@ import os
 from realsyncnet_cli import analyze_sync
 
 st.set_page_config(page_title="CMEC Sync", layout="wide")
-st.title("🧠 CMEC: Explainable Audio-Video Sync")
-st.markdown("**Cross-Modal Energy Correlation** - Production ready, fully explainable")
+st.title("CMEC: Explainable Audio-Video Sync")
+st.markdown("**Cross-Modal Energy Correlation**")
 
 video = st.file_uploader("📁 Upload Video", type=['mp4','mov','avi','mkv'])
 
@@ -84,9 +29,9 @@ if video is not None:
         st.metric("📏 Distance", f"{dist:.3f}", "Fully synced")
     
     st.markdown("---")
-    st.subheader("🧠 **Why this offset? Cross-Correlation EXPLANATION**")
+    st.subheader("**Why this offset? Cross-Correlation EXPLANATION**")
     
-    # GRAPH 1: CORRELATION HEATMAP (FIXED)
+    # GRAPH 1: CORRELATION HEATMAP
     peak_idx = np.argmax(corr)
     fig1 = go.Figure()
     fig1.add_trace(go.Heatmap(z=[corr], 
@@ -94,7 +39,6 @@ if video is not None:
                              zmid=np.max(corr)*0.7,
                              hovertemplate="Lag: %{x:.0f} frames<br>Similarity: %{z:.3f}<extra></extra>"))
     
-    # ✅ FIXED VLINE → add_shape
     fig1.add_shape(type="line",
                   x0=peak_idx, x1=peak_idx,
                   y0=0, y1=1,
@@ -106,7 +50,7 @@ if video is not None:
                       height=350, showlegend=False)
     st.plotly_chart(fig1, use_container_width=True)
     
-    # GRAPH 2: SIGNAL ALIGNMENT (unchanged)
+    # GRAPH 2: SIGNAL ALIGNMENT
     t_audio = np.arange(len(audio_energy)) * (16000/1600) / fps
     t_video = np.arange(len(lip_motion)) / fps
     
@@ -141,4 +85,4 @@ if video is not None:
     """)
 
 st.markdown("---")
-st.markdown("*Production-ready CMEC engine | Fully explainable | FR4+RQ4 compliant*")
+st.markdown("* Fully explainable *")
