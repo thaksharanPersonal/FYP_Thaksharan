@@ -1,9 +1,7 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-
 streamlit
 plotly
 numpy
-opencv-python-headless==4.10.0.84
+opencv-python-headless
 librosa
 pandas
 scipy
@@ -17,6 +15,6 @@ torchvision
 captum
 fastdtw
 scenedetect
+syncnet-python
 python-speech-features
 tqdm
-syncnet-python
