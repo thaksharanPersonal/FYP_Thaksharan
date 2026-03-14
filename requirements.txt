@@ -16,5 +16,5 @@ captum
 fastdtw
 scenedetect
 syncnet-python
-python_speech_features
+python-speech-features
 tqdm
