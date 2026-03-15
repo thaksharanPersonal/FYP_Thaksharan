@@ -8,73 +8,153 @@ import tempfile
 import os
 from realsyncnet_cli import analyze_sync
 
-# --- CONFIG & THEME ---
-st.set_page_config(page_title="🧠 CMEC Dynamic XAI", layout="wide")
+# CONFIG & THEME
+st.set_page_config(page_title="🧠 CMEC Dynamic XAI", layout="wide", initial_sidebar_state="collapsed")
 
-# Custom CSS for the "AI Dashboard" look
+# Custom CSS
 st.markdown("""
 <style>
-    /* Dark Cyber Theme */
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap');
+    
+    html, body, [class*="css"]  {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
     .stApp {
-        background-color: #0E1117;
-        color: #E0E0E0;
+        background: radial-gradient(circle at top right, #0a192f, #060d17);
+        color: #ccd6f6;
     }
     
-    /* Glowing Metric Cards */
+    /* Neon Glow Metric Cards */
     div[data-testid="metric-container"] {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(0, 212, 255, 0.3);
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.1);
+        background: rgba(16, 33, 65, 0.5);
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        padding: 25px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        transition: 0.3s ease;
+    }
+    div[data-testid="metric-container"]:hover {
+        border-color: #64ffda;
+        transform: translateY(-5px);
     }
     
-    /* Header Styling */
+    /* Custom Header styling */
+    .hero-text {
+        text-align: center;
+        padding: 40px 0;
+        animation: fadeIn 2s;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     .main-title {
-        font-size: 42px;
+        font-size: 56px;
         font-weight: 800;
-        letter-spacing: -1px;
-        background: -webkit-linear-gradient(#00d4ff, #0055ff);
+        background: linear-gradient(90deg, #64ffda, #48cae4);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        margin-bottom: 0px;
     }
 
-    /* Info Boxes */
-    .stAlert {
-        background-color: rgba(0, 212, 255, 0.1);
-        border: 1px solid #00d4ff;
-    }
-
-    /* Custom Data Table Styling */
-    .data-card {
+    /* Landing Page Cards */
+    .landing-card {
         background: rgba(255, 255, 255, 0.03);
-        border-radius: 10px;
-        padding: 20px;
-        border-left: 5px solid #00d4ff;
-        margin-bottom: 20px;
+        border-radius: 15px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        height: 100%;
     }
 
-    hr { border-top: 1px solid #333; }
+    /* Tabs Styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 10px;
+        background-color: transparent;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# --- HEADER SECTION ---
-col_h1, col_h2 = st.columns([3, 1])
-with col_h1:
-    st.markdown('<p class="main-title">🧠 CMEC Dynamic XAI</p>', unsafe_allow_html=True)
-    st.markdown("🔍 **Temporal Audio-Visual Alignment Intelligence**")
-with col_h2:
-    st.markdown(f"<div style='text-align: right; margin-top: 20px;'><code style='color: #00d4ff;'>SYSTEM STATUS: ACTIVE</code><br><small>User: w1868277</small></div>", unsafe_allow_html=True)
-
-# --- UPLOAD SECTION ---
+# HEADER SECTION
 with st.container():
-    video = st.file_uploader("📂 VIDEO FEED", type=['mp4','mov','avi','mkv'])
+    c_left, c_right = st.columns([3, 1])
+    with c_left:
+        st.markdown('<p class="main-title">🧠 CMEC Dynamic XAI</p>', unsafe_allow_html=True)
+        st.markdown("<h3 style='color:#8892b0; font-weight:300;'>Temporal Audio-Visual Alignment Intelligence</h3>", unsafe_allow_html=True)
 
+st.markdown("<br>", unsafe_allow_html=True)
+
+if "video_processed" not in st.session_state:
+    st.session_state.video_processed = False
+
+# UPLOAD SECTION 
+with st.expander("📂 INITIATE UPLOAD", expanded=not st.session_state.video_processed):
+    video = st.file_uploader("", type=['mp4','mov','avi','mkv'], help="Upload audiovisual data for temporal forensic analysis.")
+
+if video is None:
+    
+    st.markdown("""
+    <style>
+        .stApp {
+            background: linear-gradient(125deg, #060d17, #0a192f, #001219, #002129);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Optional: Add a subtle 'Grid' overlay for the forensic look */
+        .stApp::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(100, 255, 218, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("---")
+    l_col1, l_col2, l_col3 = st.columns(3)
+    
+    with l_col1:
+        st.markdown("""
+        <div class="landing-card">
+            <h3 style="color:#64ffda;">📡 The Problem</h3>
+            <p style="color:#8892b0;">Independent recording streams often suffer from device clock drift and network jitter, leading to 'Black Box' sync errors that current AI models fail to explain.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with l_col2:
+        st.markdown("""
+        <div class="landing-card">
+            <h3 style="color:#64ffda;">🧠 The Solution</h3>
+            <p style="color:#8892b0;">CMEC provides a 3-layer architecture utilizing SyncNet baselines and Transformer-based XAI to generate human-interpretable attribution maps.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with l_col3:
+        st.markdown("""
+        <div class="landing-card">
+            <h3 style="color:#64ffda;">⚖️ Transparency</h3>
+            <p style="color:#8892b0;">Our framework answers 'WHY' an offset exists by visualizing causal perturbation and temporal saliency in high-stakes environments.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# RESULTS PROCESSING
 if video is not None:
-    with st.spinner("⚡ PROCESSING NEURAL TEMPORAL ALIGNMENT..."):
+    with st.spinner("⚡ PROCESSING TEMPORAL ALIGNMENT..."):
         offset, conf, dist, audio_energy, lip_motion, corr, fps = analyze_sync(video)
     
-    # --- DYNAMIC METRICS GRID ---
+    # DYNAMIC METRICS GRID 
     st.markdown("### 📊 CORE DIAGNOSTICS")
     c1, c2, c3 = st.columns(3)
     with c1: 
@@ -86,14 +166,14 @@ if video is not None:
     
     st.markdown("---")
     
-    # --- COMPUTATIONS FOR XAI ---
+    # COMPUTATIONS FOR XAI
     peak_idx = np.argmax(corr)
     frame_lag = peak_idx - len(lip_motion) + 1
     frame_lag_seconds = frame_lag / fps
     peak_height = corr[peak_idx]
     top_peaks = np.sum(corr > peak_height * 0.8)
     
-    # Correlation Calculations (preserving your original logic)
+    # Correlation Calculations
     min_len = min(len(audio_energy), len(lip_motion))
     raw_corr = 0.0
     if min_len > 1:
@@ -114,7 +194,7 @@ if video is not None:
     quality_color = "#00ff88" if alignment_quality >= 0.6 else "#ff4b4b"
 
     # --- VISUALIZATION LAYOUT ---
-    tab1, tab2 = st.tabs(["📈 VISUAL EVIDENCE", "🤖 DYNAMIC XAI ANALYSIS"])
+    tab1, tab2 = st.tabs(["📈 VISUAL EVIDENCE ", " 🤖 DYNAMIC XAI ANALYSIS"])
     
     with tab1:
         # GRAPH 1: HEATMAP
@@ -146,7 +226,7 @@ if video is not None:
                                 name='👄 Raw Lip Motion (Normalized)', 
                                 line=dict(color='#ff7f0e', width=3), yaxis='y2'))
         
-        # Aligned audio (normalized)
+        # Aligned audio
         if abs(shift_samples) < len(audio_energy):
             aligned_y_norm = np.roll(audio_norm, shift_samples)
             fig2.add_trace(go.Scatter(x=t_audio, y=aligned_y_norm, mode='lines', 
@@ -158,7 +238,7 @@ if video is not None:
         
         # Dual Y-axis setup
         fig2.update_layout(
-            title="🎵 **Audio vs Lip Motion: Dynamic Alignment (Normalized)**",
+            title="🎵 Audio vs Lip Motion: Dynamic Alignment (Normalized)",
             xaxis_title="Time (s)",
             yaxis=dict(title="Audio Energy", side="left", range=[0, 1]),
             yaxis2=dict(title="Lip Motion", side="right", range=[0, 1], overlaying="y"),
@@ -170,7 +250,7 @@ if video is not None:
     with tab2:
         st.subheader("🧠 Computed Explanation & Causal Analysis")
         
-        # Original Detailed Data preserved in a modern layout
+        # Original Detailed Data
         col_xai1, col_xai2 = st.columns(2)
         
         with col_xai1:
@@ -209,4 +289,5 @@ if video is not None:
         """)
 
 st.markdown("---")
-st.markdown("<center><small>CMEC Dynamic XAI Engine</small></center>", unsafe_allow_html=True)
+st.markdown("<br><br><br>", unsafe_allow_html=True)
+st.markdown("<center><p style='color:#4b5563; font-size:12px;'>CMEC DYNAMIC XAI ENGINE | 2026 RESEARCH EDITION</p></center>", unsafe_allow_html=True)
