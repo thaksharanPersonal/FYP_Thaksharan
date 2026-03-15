@@ -137,7 +137,7 @@ if video is None:
         st.markdown("""
         <div class="landing-card">
             <h3 style="color:#64ffda;">🧠 The Solution</h3>
-            <p style="color:#8892b0;">CMEC provides a 3-layer architecture utilizing SyncNet baselines and Transformer-based XAI to generate human-interpretable attribution maps.</p>
+            <p style="color:#8892b0;">CMEC provides a 3-layer architecture utilizing SyncNet baselines and XAI to generate human-interpretable attribution maps.</p>
         </div>
         """, unsafe_allow_html=True)
         
