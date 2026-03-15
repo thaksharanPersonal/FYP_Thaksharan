@@ -289,5 +289,4 @@ if video is not None:
         """)
 
 st.markdown("---")
-st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.markdown("<center><p style='color:#4b5563; font-size:12px;'>CMEC DYNAMIC XAI ENGINE | 2026 RESEARCH EDITION</p></center>", unsafe_allow_html=True)
